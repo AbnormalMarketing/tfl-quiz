@@ -74,16 +74,16 @@ exports.handler = async function(event) {
         email: data.email,
         firstName: data.name,
         fieldValues: [
-          { field: 'TFL_STAGE',     value: data.stage     || '' },
-          { field: 'TFL_INCOME',    value: data.income    || '' },
-          { field: 'TFL_LIFESTYLE', value: data.lifestyle || '' },
-          { field: 'TFL_GOAL',      value: data.goal      || '' },
-          { field: 'TFL_SKILLS',    value: data.skills    || '' },
-          { field: 'TFL_PASSION',   value: data.passion   || '' },
-          { field: 'TFL_FEAR',      value: data.fear      || '' },
-          { field: 'TFL_YEAR1',     value: data.year1     || '' },
-          { field: 'TFL_LEARN',     value: data.learn     || '' },
-          { field: 'TFL_SPEED',     value: data.speed     || '' },
+          { field: '8',  value: data.stage     || '' },
+          { field: '1',  value: data.income    || '' },
+          { field: '7',  value: data.lifestyle || '' },
+          { field: '9',  value: data.goal      || '' },
+          { field: '2',  value: data.skills    || '' },
+          { field: '3',  value: data.passion   || '' },
+          { field: '4',  value: data.fear      || '' },
+          { field: '5',  value: data.year1     || '' },
+          { field: '6',  value: data.learn     || '' },
+          { field: '10', value: data.speed     || '' },
         ]
       }
     });
