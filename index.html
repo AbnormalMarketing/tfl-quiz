@@ -388,6 +388,7 @@ function sub(){
   const name=document.getElementById('nin').value.trim();
   if(!email||!email.includes('@')){document.getElementById('ein').style.borderColor='var(--coral)';return;}
 
+  const skillsStr=(ans['skills']||[]).join(',');
   function _ac(url){var h=document.querySelector('head'),s=document.createElement('script');s.charset='utf-8';s.src=url;h.appendChild(s);}
   const p=['u=11','f=11','s=','c=0','m=0','act=sub','v=2','or=650a2066-114f-4c36-9567-63351eee078b','listid=11',
     'email='+encodeURIComponent(email),
@@ -396,7 +397,7 @@ function sub(){
     'field[TFL_INCOME,0]='+encodeURIComponent(ans['income']||''),
     'field[TFL_LIFESTYLE,0]='+encodeURIComponent(ans['lifestyle']||''),
     'field[TFL_GOAL,0]='+encodeURIComponent(ans['goal']||''),
-    'field[TFL_SKILLS,0]='+encodeURIComponent((ans['skills']||[]).join(',')),
+    'field[TFL_SKILLS,0]='+encodeURIComponent(skillsStr),
     'field[TFL_PASSION,0]='+encodeURIComponent(ans['passion']||''),
     'field[TFL_FEAR,0]='+encodeURIComponent(ans['fear']||''),
     'field[TFL_YEAR1,0]='+encodeURIComponent(ans['year1']||''),
@@ -416,7 +417,7 @@ function sub(){
       income:    ans['income']||'',
       lifestyle: ans['lifestyle']||'',
       goal:      ans['goal']||'',
-      skills:    (ans['skills']||[]).join(', '),
+      skills:    skillsStr,
       passion:   ans['passion']||'',
       fear:      ans['fear']||'',
       year1:     ans['year1']||'',
