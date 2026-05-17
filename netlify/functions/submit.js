@@ -66,7 +66,7 @@ exports.handler = async function(event) {
 
   try {
     const data = JSON.parse(event.body);
-    const acKey = process.env.AC_API_KEY;
+    const acKey = 'f689b5e705d9bf14ec81fa709a68e2426515d3ecd35b1394f7d8493d81694088b81943cd';
 
     // --- ACTIVECAMPAIGN ---
     const acBody = JSON.stringify({
