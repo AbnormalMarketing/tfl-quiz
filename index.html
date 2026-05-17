@@ -387,9 +387,11 @@ function sub(){
   const email=document.getElementById('ein').value.trim();
   const name=document.getElementById('nin').value.trim();
   if(!email||!email.includes('@')){document.getElementById('ein').style.borderColor='var(--coral)';return;}
+
   function _ac(url){var h=document.querySelector('head'),s=document.createElement('script');s.charset='utf-8';s.src=url;h.appendChild(s);}
   const p=['u=11','f=11','s=','c=0','m=0','act=sub','v=2','or=650a2066-114f-4c36-9567-63351eee078b','listid=11',
-    'email='+encodeURIComponent(email),'fullname='+encodeURIComponent(name),
+    'email='+encodeURIComponent(email),
+    'fullname='+encodeURIComponent(name),
     'field[TFL_STAGE,0]='+encodeURIComponent(ans['stage']||''),
     'field[TFL_INCOME,0]='+encodeURIComponent(ans['income']||''),
     'field[TFL_LIFESTYLE,0]='+encodeURIComponent(ans['lifestyle']||''),
@@ -402,6 +404,27 @@ function sub(){
     'field[TFL_SPEED,0]='+encodeURIComponent(ans['speed']||''),
     'tag[]=Quiz-Landing-Page','jsonp=true'].join('&');
   _ac('https://abnormalmarketing.activehosted.com/proc.php?'+p);
+
+  fetch('/.netlify/functions/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:      name,
+      email:     email,
+      date:      new Date().toLocaleDateString('en-US'),
+      stage:     ans['stage']||'',
+      income:    ans['income']||'',
+      lifestyle: ans['lifestyle']||'',
+      goal:      ans['goal']||'',
+      skills:    (ans['skills']||[]).join(', '),
+      passion:   ans['passion']||'',
+      fear:      ans['fear']||'',
+      year1:     ans['year1']||'',
+      learn:     ans['learn']||'',
+      speed:     ans['speed']||''
+    })
+  }).catch(()=>{});
+
   sessionStorage.setItem('tfl_prompt',getPrompt());
   sessionStorage.setItem('tfl_name',name);
   sessionStorage.setItem('tfl_skills',JSON.stringify(ans['skills']||[]));
