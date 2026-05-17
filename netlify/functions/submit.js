@@ -51,7 +51,7 @@ function httpsPost(hostname, path, headers, body) {
     const req = https.request({ hostname, path, method: 'POST', headers }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
+      res.on('end', () => resolve({ status: res.statusCode, body: data }));
     });
     req.on('error', reject);
     req.write(body);
@@ -64,8 +64,12 @@ exports.handler = async function(event) {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  const logs = [];
+
   try {
     const data = JSON.parse(event.body);
+    logs.push('DATA RECEIVED: ' + JSON.stringify(data));
+
     const acKey = 'f689b5e705d9bf14ec81fa709a68e2426515d3ecd35b1394f7d8493d81694088b81943cd';
 
     // --- ACTIVECAMPAIGN ---
@@ -88,7 +92,7 @@ exports.handler = async function(event) {
       }
     });
 
-    await httpsPost(
+    const acResult = await httpsPost(
       'abnormalmarketing.api-us1.com',
       '/api/3/contacts',
       {
@@ -98,9 +102,13 @@ exports.handler = async function(event) {
       },
       acBody
     );
+    logs.push('AC STATUS: ' + acResult.status);
+    logs.push('AC RESPONSE: ' + acResult.body);
 
     // --- GOOGLE SHEETS ---
     const token = await getAccessToken();
+    logs.push('GOT SHEETS TOKEN: ' + (token ? 'yes' : 'no'));
+
     const row = [
       data.name || '', data.email || '', data.date || '',
       data.stage || '', data.income || '', data.lifestyle || '',
@@ -110,7 +118,7 @@ exports.handler = async function(event) {
     const sheetData = JSON.stringify({ values: [row] });
     const sheetId = '1D3jP_hI_V-dT0YxjzER6wl4ak0KhNKI46ASOKjAMW60';
 
-    await httpsPost(
+    const sheetResult = await httpsPost(
       'sheets.googleapis.com',
       `/v4/spreadsheets/${sheetId}/values/Form%20Responses!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
       {
@@ -120,17 +128,21 @@ exports.handler = async function(event) {
       },
       sheetData
     );
+    logs.push('SHEETS STATUS: ' + sheetResult.status);
+    logs.push('SHEETS RESPONSE: ' + sheetResult.body);
 
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ ok: true })
+      body: JSON.stringify({ ok: true, logs })
     };
 
   } catch(err) {
+    logs.push('ERROR: ' + err.message);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message })
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: err.message, logs })
     };
   }
 };
