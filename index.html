@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What Kind of Digital Nomad Are You? Take the Free Quiz</title>
+<meta name="description" content="Answer 10 questions and get a personalized plan to earn online, live abroad, and own your time. Free. Takes under 2 minutes."/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','4261282567445456');fbq('track','PageView');
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ocean:#1A8FBF;--ocean-dark:#0D6590;--sky:#7DD4F0;
+  --coral:#F4845F;--sun:#F7C244;--leaf:#2BAE83;
+  --text:#1A2E3B;--muted:#6B8A9A;--foam:#E8F7FC;
+  --border:#CBE8F5;--bg:#F0F5F8;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;background:#fff;color:var(--text);}
+
+/* SPLIT LAYOUT */
+.above-fold{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+
+/* LEFT PANEL */
+.headline-panel{
+  background:linear-gradient(155deg,#0A4F70 0%,#1A8FBF 100%);
+  padding:40px 48px;display:flex;flex-direction:column;
+  justify-content:center;position:sticky;top:0;height:100vh;
+}
+.logo-wrap{margin-bottom:28px;}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.9);font-size:11px;font-weight:500;
+  letter-spacing:2px;text-transform:uppercase;
+  padding:5px 14px;border-radius:20px;margin-bottom:20px;
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--coral);animation:pulse 2s infinite;flex-shrink:0;}
+.hero-headline{
+  font-family:'Fraunces',serif;font-size:clamp(28px,3vw,48px);
+  font-weight:300;line-height:1.12;color:#fff;margin-bottom:16px;
+}
+.hero-headline em{color:var(--sun);font-style:italic;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.75);line-height:1.75;max-width:380px;margin-bottom:28px;}
+.proof-row{display:flex;flex-direction:column;gap:10px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.15);}
+.proof-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.72);}
+
+/* RIGHT PANEL */
+.quiz-panel{background:var(--bg);padding:36px 40px;display:flex;flex-direction:column;min-height:100vh;}
+.quiz-panel-inner{max-width:540px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:22px;}
+.progress-meta{display:flex;justify-content:space-between;margin-bottom:7px;}
+.progress-label{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.progress-pct{font-size:11px;font-weight:600;color:var(--ocean);}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--ocean),var(--coral));border-radius:2px;transition:width 0.5s ease;}
+
+/* QUESTION */
+.q-card{background:#fff;border-radius:18px;padding:26px;border:1px solid var(--border);position:relative;overflow:hidden;animation:slideUp 0.35s ease;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ocean),var(--sky),var(--coral));}
+.q-step{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;}
+.q-title{font-family:'Fraunces',serif;font-size:19px;font-weight:300;line-height:1.35;margin-bottom:5px;}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.opts{display:grid;gap:7px;}
+.opt-btn{background:#F8FAFB;border:1.5px solid var(--border);border-radius:11px;padding:10px 13px;cursor:pointer;text-align:left;font-family:inherit;font-size:13px;color:var(--text);display:flex;align-items:center;gap:10px;transition:all 0.15s;width:100%;}
+.opt-btn:hover{border-color:var(--ocean);background:var(--foam);}
+.opt-btn.sel{border-color:var(--ocean);background:#EBF7FF;}
+.opt-btn.sel .opt-icon{background:var(--ocean);}
+.opt-icon{width:32px;height:32px;border-radius:8px;background:#EAEFF3;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background 0.15s;}
+.opt-label{font-weight:500;font-size:13px;line-height:1.3;}
+.opt-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.multi-hint{font-size:11px;color:var(--muted);margin-top:7px;text-align:center;}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.btn-back{background:none;border:none;font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;}
+.btn-back:hover{color:var(--text);}
+.btn-next{background:var(--ocean);color:#fff;border:none;border-radius:50px;padding:11px 26px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 0.2s;opacity:0.3;pointer-events:none;}
+.btn-next.go{opacity:1;pointer-events:auto;}
+.btn-next.go:hover{background:var(--ocean-dark);}
+
+/* RESULT */
+.result-card{border-radius:18px;overflow:hidden;border:1px solid var(--border);animation:slideUp 0.35s ease;}
+.result-hero{background:linear-gradient(135deg,var(--ocean),var(--ocean-dark));padding:26px;text-align:center;}
+.result-badge{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+.result-title{font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:#fff;line-height:1.3;margin-bottom:6px;}
+.result-desc{font-size:13px;color:rgba(255,255,255,0.82);line-height:1.7;}
+.result-body{background:#F8FAFB;padding:18px 22px;}
+.result-section{margin-bottom:16px;}
+.result-section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-tag{background:var(--foam);color:var(--ocean);font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;border:1px solid var(--border);}
+.opp-box{background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px 15px;}
+.opp-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.opp-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* EMAIL */
+.email-section{background:#fff;border-top:1px solid var(--border);padding:18px 22px;}
+.email-title{font-family:'Fraunces',serif;font-size:17px;font-weight:300;margin-bottom:4px;}
+.email-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.email-fields{display:flex;flex-direction:column;gap:7px;}
+.email-input{background:#F8FAFB;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--text);font-family:inherit;outline:none;transition:border-color 0.2s;width:100%;}
+.email-input:focus{border-color:var(--ocean);}
+.email-input::placeholder{color:#aac4d4;}
+.email-btn{background:var(--coral);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(244,132,95,0.35);transition:all 0.2s;width:100%;}
+.email-btn:hover{background:#e06f4a;}
+.email-note{font-size:10px;color:#aac4d4;text-align:center;}
+.success-box{text-align:center;padding:20px 0 12px;}
+.success-emoji{font-size:40px;margin-bottom:10px;}
+.success-title{font-family:'Fraunces',serif;font-size:20px;font-weight:300;margin-bottom:6px;}
+.success-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* MOBILE */
+@media(max-width:768px){
+  .above-fold{grid-template-columns:1fr;min-height:auto;}
+  .headline-panel{position:static;height:auto;padding:24px 20px 20px;}
+  .hero-headline{font-size:clamp(26px,7vw,36px);}
+  .proof-row{display:none;}
+  .quiz-panel{padding:20px 16px 48px;min-height:auto;}
+  .q-card{padding:18px 14px;}
+  .result-body,.email-section{padding:14px;}
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(0.85);}}
+</style>
+</head>
+<body>
+<div class="above-fold">
+
+  <!-- LEFT: HEADLINE -->
+  <div class="headline-panel">
+    <div class="logo-wrap">
+      <svg width="170" height="30" viewBox="0 0 220 40" fill="none">
+        <circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none"/>
+        <circle cx="20" cy="20" r="3" fill="#F4845F"/>
+        <line x1="20" y1="20" x2="20" y2="7" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="30" y2="25" stroke="#F4845F" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="4" x2="20" y2="7.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="36" y1="20" x2="32.5" y2="20" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="36" x2="20" y2="32.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="4" y1="20" x2="7.5" y2="20" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="48" y="16" font-family="Fraunces, Georgia, serif" font-size="14.5" font-weight="300" fill="#ffffff" letter-spacing="0.4">Time Freedom</text>
+        <text x="48.5" y="31" font-family="Plus Jakarta Sans, sans-serif" font-size="9" font-weight="600" fill="#F4845F" letter-spacing="3">LAB</text>
+      </svg>
+    </div>
+
+    <div class="hero-tag"><span class="pulse"></span> Free · Under 2 minutes</div>
+
+    <!-- ✏️ CHANGE FOR EACH A/B VERSION -->
+    <h1 class="hero-headline">
+      What would you do today if your job
+      couldn't tell you <em>where to be?</em>
+    </h1>
+    <p class="hero-sub">
+      Answer 10 questions and get a free personalized plan to earn online, live abroad, and own your time — built around your skills and goals.
+    </p>
+
+    <!-- PROOF — desktop only -->
+    <div class="proof-row">
+      <div class="proof-item">🌍 Location independent since 2013</div>
+      <div class="proof-item">🥊 Training MMA in every country I visit</div>
+      <div class="proof-item">🌴 Bali — all in under $2,500/mo</div>
+      <div class="proof-item">📈 12+ years running ads from anywhere</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: QUIZ -->
+  <div class="quiz-panel">
+    <div class="quiz-panel-inner">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span class="progress-label" id="prog-label">Step 1 of 10</span>
+          <span class="progress-pct" id="prog-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+      <div id="quiz-wrap"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer style="text-align:center;padding:18px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);">
+  <strong style="color:var(--text);">Time Freedom Lab</strong> · timefreedomlab.com · Built from Bali 🌴
+</footer>
+
+<script>
+// A/B TEST HEADLINES — duplicate this file and change headline/subheadline above
+// VERSION A: "What would you do today if your job couldn't tell you where to be?"
+// VERSION B: "How do I earn money online and travel the world?"
+// VERSION C: "Stop trading your time for money. Here's how to start."
+// VERSION D: "Your job decides your life right now. What if YOU did?"
+
+const questions=[
+  {id:'stage',step:1,title:'Where are you starting from?',hint:'Be honest — your plan is built around this.',multi:false,options:[
+    {icon:'🌱',label:'Just dreaming about it',sub:'I want freedom but don\'t know where to start'},
+    {icon:'⚡',label:'I have a side hustle or idea',sub:'Making some money but not consistent yet'},
+    {icon:'💻',label:'I already work remotely',sub:'I have income but want more freedom'},
+    {icon:'🌍',label:'Already location independent',sub:'Living it but want to level up'},
+  ]},
+  {id:'income',step:2,title:'How do you want to earn?',hint:'This shapes which income path goes in your plan.',multi:false,options:[
+    {icon:'🏢',label:'Remote job or freelance clients',sub:'Get hired or find clients for my skills'},
+    {icon:'🛒',label:'Build and sell my own products or courses',sub:'Create something I own and sell on my terms'},
+    {icon:'📱',label:'Grow a personal brand and monetize it',sub:'Content, audience, sponsorships, offers'},
+    {icon:'📈',label:'Trading, investing, or passive income',sub:'Make money work for me over time'},
+  ]},
+  {id:'lifestyle',step:3,title:'What does your ideal life look like?',hint:'Picture it clearly — this is what we\'re building toward.',multi:false,options:[
+    {icon:'🌴',label:'Slow life — one base, deep roots somewhere',sub:'Pick a place I love and settle in'},
+    {icon:'✈️',label:'Always moving — new country every few months',sub:'Full nomad, always exploring'},
+    {icon:'🏡',label:'Home base + travel a few months a year',sub:'Best of both worlds'},
+    {icon:'🌍',label:'Full nomad — no fixed address',sub:'Completely untethered, total freedom'},
+  ]},
+  {id:'goal',step:4,title:'What matters most right now?',hint:'Pick the one that hits hardest today.',multi:false,options:[
+    {icon:'💸',label:'Making money online first',sub:'I need a clear path to real income'},
+    {icon:'🎯',label:'Getting a clear plan and direction',sub:'I\'m lost and need my next step'},
+    {icon:'🏋🏿',label:'Improving my health and lifestyle',sub:'Freedom to train, eat well, live fully'},
+    {icon:'🤝',label:'Finding my community',sub:'Surround myself with people building this'},
+  ]},
+  {id:'skills',step:5,title:'What are you already good at?',hint:'Pick up to 3 — these are your starting assets.',multi:true,max:3,options:[
+    {icon:'🎥',label:'Video editing or content creation',sub:''},
+    {icon:'📸',label:'Photography or visual arts',sub:''},
+    {icon:'💻',label:'Tech, coding, or web design',sub:''},
+    {icon:'📣',label:'Marketing, ads, or social media',sub:''},
+    {icon:'✍️',label:'Writing, copywriting, or storytelling',sub:''},
+    {icon:'🎓',label:'Teaching, coaching, or consulting',sub:''},
+    {icon:'📊',label:'Finance, accounting, or analytics',sub:''},
+    {icon:'🗣️',label:'Sales or client relationships',sub:''},
+    {icon:'🧘',label:'Health, fitness, or wellness',sub:''},
+    {icon:'🛠️',label:'Building or selling products',sub:''},
+  ]},
+  {id:'passion',step:6,title:'What would you love doing every day?',hint:'If money wasn\'t a factor — what lights you up?',multi:false,options:[
+    {icon:'🎨',label:'Create — content, art, or build things',sub:''},
+    {icon:'🌍',label:'Explore — travel, experience, discover',sub:''},
+    {icon:'🏋🏿',label:'Move — train, compete, stay active',sub:''},
+    {icon:'🧠',label:'Learn and teach — absorb and share knowledge',sub:''},
+    {icon:'💼',label:'Build — grow a business or brand',sub:''},
+    {icon:'🤝',label:'Connect — lead a community or help people',sub:''},
+  ]},
+  {id:'fear',step:7,title:'What\'s your biggest fear about making the move?',hint:'Naming it is the first step to solving it.',multi:false,options:[
+    {icon:'💸',label:'I won\'t earn enough to sustain myself',sub:''},
+    {icon:'😰',label:'I\'ll fail and have to go back to a 9-5',sub:''},
+    {icon:'🧳',label:'I don\'t know where to even start',sub:''},
+    {icon:'👨‍👩‍👧',label:'My family or relationships won\'t support it',sub:''},
+    {icon:'🌐',label:'I don\'t have the right skills yet',sub:''},
+    {icon:'⏰',label:'I don\'t have enough time to build while working',sub:''},
+  ]},
+  {id:'year1',step:8,title:'What does year one of Time Freedom look like?',hint:'This is your vision — paint the picture.',multi:false,options:[
+    {icon:'🌴',label:'One place — settle somewhere affordable and build',sub:''},
+    {icon:'✈️',label:'Three countries — experience different cultures',sub:''},
+    {icon:'🏋🏿',label:'Health first — best shape of my life',sub:''},
+    {icon:'💸',label:'Money first — build income before exploring',sub:''},
+    {icon:'🤝',label:'Community first — find my people',sub:''},
+    {icon:'🧪',label:'All of it — I want everything at once',sub:''},
+  ]},
+  {id:'learn',step:9,title:'How do you learn best?',hint:'This shapes exactly what we send you.',multi:false,options:[
+    {icon:'📚',label:'Step-by-step course at my own pace',sub:''},
+    {icon:'🎥',label:'Real examples and case studies',sub:''},
+    {icon:'🙋🏿',label:'Coaching and direct feedback',sub:''},
+    {icon:'🧪',label:'Just give me the first action — I learn by doing',sub:''},
+  ]},
+  {id:'speed',step:10,title:'How fast do you want to move?',hint:'Your plan adjusts to your pace. No wrong answer.',multi:false,options:[
+    {icon:'🔥',label:'Fast as possible — I\'m ready right now',sub:''},
+    {icon:'🚶🏿',label:'Steady — building alongside my current life',sub:''},
+    {icon:'🧭',label:'Still exploring — no rush yet',sub:''},
+  ]},
+];
+
+const ans={};let current=0;
+
+const opps={
+  'Video editing or content creation':{title:'📹 Video Editor → Remote Business',desc:'Offer editing to creators, agencies, and brands. Rates start at $25-75/hr. One retainer client = $1,000-3,000/month.'},
+  'Photography or visual arts':{title:'📸 Photographer → Digital Income',desc:'Sell stock photos, offer remote brand photography, create presets, or build a course. Stock income + course = strong combo.'},
+  'Tech, coding, or web design':{title:'💻 Developer → Freelance Freedom',desc:'One of the most in-demand remote skills on earth. 3 portfolio projects + Toptal/Upwork = $50-150/hr within weeks.'},
+  'Marketing, ads, or social media':{title:'📣 Marketer → Agency or Consulting',desc:'Package your skills into a done-for-you service. Meta ads, social media, and email marketing are highly paid remote skills.'},
+  'Writing, copywriting, or storytelling':{title:'✍️ Writer → Content Business',desc:'Copywriters are in massive demand. Freelance → newsletter → course. $2,000-5,000/month remotely is very achievable.'},
+  'Teaching, coaching, or consulting':{title:'🎓 Coach → Online Consulting',desc:'Whatever you know — someone needs to learn it. Package into coaching, group program, or course. $1,000+/month from anywhere.'},
+  'Finance, accounting, or analytics':{title:'📊 Finance Pro → Remote Consulting',desc:'Bookkeeping and analytics are in-demand remote skills. Freelance bookkeepers earn $30-60/hr. CFO consulting $5,000+/month.'},
+  'Sales or client relationships':{title:'🗣️ Sales → Commission Freedom',desc:'Remote sales roles everywhere paying commission. Highest-leverage skill for building income fast.'},
+  'Health, fitness, or wellness':{title:'🧘 Wellness Pro → Online Coaching',desc:'Online fitness coaching and wellness programs are booming. 12-week program at $200-500. Your lifestyle IS the marketing.'},
+  'Building or selling products':{title:'🛠️ Builder → E-commerce Freedom',desc:'Sell products from anywhere. Dropshipping, print-on-demand, digital downloads. Store never closes when you\'re traveling.'},
+};
+
+const resultMap={
+  'Just dreaming about it':{badge:'Your Plan: Start Small, Win Fast',title:'One small action changes everything.',desc:'Big visions start with tiny actions. Your plan focuses on your first win this week — proof that this is real and possible for you.'},
+  'I have a side hustle or idea':{badge:'Your Plan: Make It Consistent',title:'You\'re already closer than most.',desc:'You\'ve started. Now let\'s make it consistent, scalable, and location-independent. Your plan builds on what you already have.'},
+  'I already work remotely':{badge:'Your Plan: Own Your Income',title:'Remote work is step one. Ownership is step two.',desc:'You have flexibility. Now let\'s build income you own — not a salary that can disappear. Your plan adds leverage.'},
+  'Already location independent':{badge:'Your Plan: Build the Systems',title:'You\'re living it — now let\'s scale it.',desc:'You\'ve cracked location independence. Your plan focuses on systems and income streams that grow while you travel.'},
+};
+
+function getOpp(){const s=ans['skills']||[];return s.length?opps[s[0]]||null:null;}
+function getResult(){return resultMap[ans['stage']]||resultMap['Just dreaming about it'];}
+function getPrompt(){
+  const skill=(ans['skills']||[])[0]||'my existing skills';
+  return `I want to build Time Freedom — choosing where I live, when I work, and how I spend my days.\n\nMy main skill: ${skill}\nHow I want to earn: ${ans['income']||''}\nIdeal lifestyle: ${ans['lifestyle']||''}\nBiggest fear: ${ans['fear']||''}\nI want to move: ${ans['speed']||''}\n\nGive me a specific 30-day action plan:\n1. How to start earning from my skills within 30 days\n2. Tools and platforms I need (free first)\n3. Realistic income in month 1, 3, and 6\n4. First 3 actions to take THIS WEEK\n5. How this leads to location independence\n\nBe specific. Real numbers. Real steps. No generic advice.`;
+}
+
+function ready(){const q=questions[current];return q.multi?(ans[q.id]||[]).length>0:!!ans[q.id];}
+
+function render(){
+  const wrap=document.getElementById('quiz-wrap');
+  if(current>=questions.length){renderResult(wrap);return;}
+  const q=questions[current];
+  const pct=Math.round((current/questions.length)*100);
+  document.getElementById('prog-label').textContent=`Step ${q.step} of ${questions.length}`;
+  document.getElementById('prog-pct').textContent=`${pct}%`;
+  document.getElementById('prog-fill').style.width=`${pct}%`;
+  const sel=ans[q.id]||(q.multi?[]:null);
+  wrap.innerHTML=`
+    <div class="q-card">
+      <div class="q-step">Question ${q.step} of ${questions.length}</div>
+      <div class="q-title">${q.title}</div>
+      <div class="q-hint">${q.hint}</div>
+      <div class="opts">
+        ${q.options.map((o,i)=>`
+          <button class="opt-btn${q.multi?(sel.includes(o.label)?' sel':''):(sel===o.label?' sel':'')}"
+            onclick="pick(${i})">
+            <div class="opt-icon">${o.icon}</div>
+            <div>
+              <div class="opt-label">${o.label}</div>
+              ${o.sub?`<div class="opt-sub">${o.sub}</div>`:''}
+            </div>
+          </button>`).join('')}
+      </div>
+      ${q.multi?`<div class="multi-hint">Select up to ${q.max}</div>`:''}
+      <div class="q-nav">
+        ${current>0?`<button class="btn-back" onclick="back()">← Back</button>`:`<span></span>`}
+        <button class="btn-next${ready()?' go':''}" onclick="next()">
+          ${current===questions.length-1?'Build My Plan →':'Next →'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function pick(i){
+  const q=questions[current];const val=q.options[i].label;
+  if(q.multi){let arr=ans[q.id]?[...ans[q.id]]:[];arr.includes(val)?arr=arr.filter(v=>v!==val):(arr.length<(q.max||3)&&arr.push(val));ans[q.id]=arr;}
+  else{ans[q.id]=val;}
+  render();
+}
+function next(){if(!ready())return;current++;window.scrollTo({top:0,behavior:'smooth'});render();}
+function back(){if(current>0){current--;window.scrollTo({top:0,behavior:'smooth'});render();}}
+
+function renderResult(wrap){
+  document.getElementById('prog-label').textContent='Your plan is ready 🌊';
+  document.getElementById('prog-pct').textContent='100%';
+  document.getElementById('prog-fill').style.width='100%';
+  const r=getResult();const opp=getOpp();const skills=ans['skills']||[];
+  wrap.innerHTML=`
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-badge">${r.badge}</div>
+        <div class="result-title">${r.title}</div>
+        <div class="result-desc">${r.desc}</div>
+      </div>
+      <div class="result-body">
+        ${skills.length?`<div class="result-section"><div class="result-section-title">Your Starting Assets 💪🏿</div><div class="skill-tags">${skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div></div>`:''}
+        ${opp?`<div class="result-section"><div class="result-section-title">Your Biggest Opportunity 🎯</div><div class="opp-box"><div class="opp-title">${opp.title}</div><div class="opp-desc">${opp.desc}</div></div></div>`:''}
+      </div>
+      <div class="email-section">
+        <div class="email-title">Get your full plan + AI prompt 🌊</div>
+        <div class="email-desc">We'll send your personalized Time Freedom Plan to your inbox — including your custom AI prompt and income path breakdown. Free.</div>
+        <div class="email-fields" id="ef">
+          <input type="text" class="email-input" id="nin" placeholder="Your first name"/>
+          <input type="email" class="email-input" id="ein" placeholder="your@email.com"/>
+          <button class="email-btn" onclick="sub()">Send My Free Plan 🙏🏿</button>
+          <div class="email-note">No spam. Ever. Unsubscribe anytime.</div>
+        </div>
+        <div id="sz" style="display:none;">
+          <div class="success-box">
+            <div class="success-emoji">🌊</div>
+            <div class="success-title">You're in. Welcome to the Lab.</div>
+            <div class="success-desc">Your plan is heading to your inbox. Check it in the next 2 minutes 📬</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function sub(){
+  const email=document.getElementById('ein').value.trim();
+  const name=document.getElementById('nin').value.trim();
+  if(!email||!email.includes('@')){document.getElementById('ein').style.borderColor='var(--coral)';return;}
+  function _ac(url){var h=document.querySelector('head'),s=document.createElement('script');s.charset='utf-8';s.src=url;h.appendChild(s);}
+  const p=['u=11','f=11','s=','c=0','m=0','act=sub','v=2','or=650a2066-114f-4c36-9567-63351eee078b','listid=11',
+    'email='+encodeURIComponent(email),'fullname='+encodeURIComponent(name),
+    'field[TFL_STAGE,0]='+encodeURIComponent(ans['stage']||''),
+    'field[TFL_INCOME,0]='+encodeURIComponent(ans['income']||''),
+    'field[TFL_LIFESTYLE,0]='+encodeURIComponent(ans['lifestyle']||''),
+    'field[TFL_GOAL,0]='+encodeURIComponent(ans['goal']||''),
+    'field[TFL_SKILLS,0]='+encodeURIComponent((ans['skills']||[]).join(',')),
+    'field[TFL_PASSION,0]='+encodeURIComponent(ans['passion']||''),
+    'field[TFL_FEAR,0]='+encodeURIComponent(ans['fear']||''),
+    'field[TFL_YEAR1,0]='+encodeURIComponent(ans['year1']||''),
+    'field[TFL_LEARN,0]='+encodeURIComponent(ans['learn']||''),
+    'field[TFL_SPEED,0]='+encodeURIComponent(ans['speed']||''),
+    'tag[]=Quiz-Landing-Page','jsonp=true'].join('&');
+  _ac('https://abnormalmarketing.activehosted.com/proc.php?'+p);
+  sessionStorage.setItem('tfl_prompt',getPrompt());
+  sessionStorage.setItem('tfl_name',name);
+  sessionStorage.setItem('tfl_skills',JSON.stringify(ans['skills']||[]));
+  sessionStorage.setItem('tfl_opportunity',JSON.stringify(getOpp()));
+  document.getElementById('ef').style.display='none';
+  document.getElementById('sz').style.display='block';
+  if(typeof fbq!=='undefined'){fbq('track','Lead');fbq('track','CompleteRegistration');}
+  setTimeout(()=>window.location.href='https://timefreedomlab.com/quiz-thank-you',1200);
+}
+render();
+</script>
+</body>
+</html>
