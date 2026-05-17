@@ -46,15 +46,15 @@ async function getAccessToken() {
   });
 }
 
-function httpsPost(hostname, path, headers, body) {
+function httpsRequest(method, hostname, path, headers, body) {
   return new Promise((resolve, reject) => {
-    const req = https.request({ hostname, path, method: 'POST', headers }, (res) => {
+    const req = https.request({ method, hostname, path, headers }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve({ status: res.statusCode, body: data }));
     });
     req.on('error', reject);
-    req.write(body);
+    if (body) req.write(body);
     req.end();
   });
 }
@@ -68,46 +68,70 @@ exports.handler = async function(event) {
 
   try {
     const data = JSON.parse(event.body);
-    logs.push('DATA RECEIVED: ' + JSON.stringify(data));
+    logs.push('DATA OK');
 
     const acKey = 'f689b5e705d9bf14ec81fa709a68e2426515d3ecd35b1394f7d8493d81694088b81943cd';
 
-    // --- ACTIVECAMPAIGN ---
-    const acBody = JSON.stringify({
+    const fieldValues = [
+      { field: '8',  value: data.stage     || '' },
+      { field: '1',  value: data.income    || '' },
+      { field: '7',  value: data.lifestyle || '' },
+      { field: '9',  value: data.goal      || '' },
+      { field: '2',  value: data.skills    || '' },
+      { field: '3',  value: data.passion   || '' },
+      { field: '4',  value: data.fear      || '' },
+      { field: '5',  value: data.year1     || '' },
+      { field: '6',  value: data.learn     || '' },
+      { field: '10', value: data.speed     || '' },
+    ];
+
+    // Step 1: sync contact (create or update)
+    const syncBody = JSON.stringify({
       contact: {
         email: data.email,
         firstName: data.name,
-        fieldValues: [
-          { field: '8',  value: data.stage     || '' },
-          { field: '1',  value: data.income    || '' },
-          { field: '7',  value: data.lifestyle || '' },
-          { field: '9',  value: data.goal      || '' },
-          { field: '2',  value: data.skills    || '' },
-          { field: '3',  value: data.passion   || '' },
-          { field: '4',  value: data.fear      || '' },
-          { field: '5',  value: data.year1     || '' },
-          { field: '6',  value: data.learn     || '' },
-          { field: '10', value: data.speed     || '' },
-        ]
+        fieldValues
       }
     });
 
-    const acResult = await httpsPost(
+    const syncResult = await httpsRequest(
+      'POST',
       'abnormalmarketing.api-us1.com',
-      '/api/3/contacts',
+      '/api/3/contact/sync',
       {
         'Content-Type': 'application/json',
         'Api-Token': acKey,
-        'Content-Length': Buffer.byteLength(acBody)
+        'Content-Length': Buffer.byteLength(syncBody)
       },
-      acBody
+      syncBody
     );
-    logs.push('AC STATUS: ' + acResult.status);
-    logs.push('AC RESPONSE: ' + acResult.body);
+    logs.push('AC SYNC STATUS: ' + syncResult.status);
+    logs.push('AC SYNC RESPONSE: ' + syncResult.body);
 
-    // --- GOOGLE SHEETS ---
+    // Step 2: add to list 11
+    const syncData = JSON.parse(syncResult.body);
+    const contactId = syncData.contact && syncData.contact.id;
+    if (contactId) {
+      const listBody = JSON.stringify({
+        contactList: { list: 11, contact: contactId, status: 1 }
+      });
+      const listResult = await httpsRequest(
+        'POST',
+        'abnormalmarketing.api-us1.com',
+        '/api/3/contactLists',
+        {
+          'Content-Type': 'application/json',
+          'Api-Token': acKey,
+          'Content-Length': Buffer.byteLength(listBody)
+        },
+        listBody
+      );
+      logs.push('AC LIST STATUS: ' + listResult.status);
+    }
+
+    // Step 3: Google Sheets
     const token = await getAccessToken();
-    logs.push('GOT SHEETS TOKEN: ' + (token ? 'yes' : 'no'));
+    logs.push('SHEETS TOKEN: ' + (token ? 'yes' : 'no'));
 
     const row = [
       data.name || '', data.email || '', data.date || '',
@@ -118,9 +142,10 @@ exports.handler = async function(event) {
     const sheetData = JSON.stringify({ values: [row] });
     const sheetId = '1D3jP_hI_V-dT0YxjzER6wl4ak0KhNKI46ASOKjAMW60';
 
-    const sheetResult = await httpsPost(
+    const sheetResult = await httpsRequest(
+      'POST',
       'sheets.googleapis.com',
-      `/v4/spreadsheets/${sheetId}/values/Form%20Responses!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+      `/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
       {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
