@@ -1,26 +1,29 @@
 const https = require('https');
+const crypto = require('crypto');
 
-function getJWT(serviceAccount) {
+function getJWT() {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+
   const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
   const now = Math.floor(Date.now() / 1000);
   const claim = Buffer.from(JSON.stringify({
-    iss: serviceAccount.client_email,
+    iss: email,
     scope: 'https://www.googleapis.com/auth/spreadsheets',
     aud: 'https://oauth2.googleapis.com/token',
     exp: now + 3600,
     iat: now
   })).toString('base64url');
 
-  const crypto = require('crypto');
   const sign = crypto.createSign('RSA-SHA256');
   sign.update(`${header}.${claim}`);
-  const signature = sign.sign(serviceAccount.private_key, 'base64url');
+  const signature = sign.sign(privateKey, 'base64url');
 
   return `${header}.${claim}.${signature}`;
 }
 
-async function getAccessToken(serviceAccount) {
-  const jwt = getJWT(serviceAccount);
+async function getAccessToken() {
+  const jwt = getJWT();
   const body = `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`;
 
   return new Promise((resolve, reject) => {
@@ -53,9 +56,7 @@ exports.handler = async function(event) {
 
   try {
     const data = JSON.parse(event.body);
-
-    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
-    const token = await getAccessToken(serviceAccount);
+    const token = await getAccessToken();
 
     const row = [
       data.name || '', data.email || '', data.date || '',
