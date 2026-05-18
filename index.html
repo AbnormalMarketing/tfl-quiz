@@ -386,7 +386,7 @@ function renderResult(wrap){
 function sub(){
   const email=document.getElementById('ein').value.trim();
   const name=document.getElementById('nin').value.trim();
-  if(!email||!email.includes('@')){document.getElementById('ein').style.borderColor='var(--coral)';return;}
+  if(!email||!email.includes('@')||!email.includes('.')||email.length<6||/[+]{1}[a-z]{6,}@/.test(email)){document.getElementById('ein').style.borderColor='var(--coral)';return;}
 
   const skillsStr=(ans['skills']||[]).join(',');
   function _ac(url){var h=document.querySelector('head'),s=document.createElement('script');s.charset='utf-8';s.src=url;h.appendChild(s);}
