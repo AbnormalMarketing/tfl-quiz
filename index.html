@@ -319,6 +319,7 @@ function render(){
   document.getElementById('prog-label').textContent=`Step ${q.step} of ${questions.length}`;
   document.getElementById('prog-pct').textContent=`${pct}%`;
   document.getElementById('prog-fill').style.width=`${pct}%`;
+  if(current === 0) gtag('event', 'quiz_started', { event_category: 'quiz' });
   const sel=ans[q.id]||(q.multi?[]:null);
   wrap.innerHTML=`
     <div class="q-card">
@@ -350,12 +351,14 @@ function pick(i){
   const q=questions[current];const val=q.options[i].label;
   if(q.multi){let arr=ans[q.id]?[...ans[q.id]]:[];arr.includes(val)?arr=arr.filter(v=>v!==val):(arr.length<(q.max||3)&&arr.push(val));ans[q.id]=arr;}
   else{ans[q.id]=val;}
+  gtag('event', 'quiz_answer', { event_category: 'quiz', question_id: q.id, answer: typeof ans[q.id] === 'object' ? ans[q.id].join(', ') : ans[q.id] });
   render();
 }
-function next(){if(!ready())return;current++;window.scrollTo({top:0,behavior:'smooth'});render();}
+function next(){if(!ready())return;current++;gtag('event', 'quiz_step', { event_category: 'quiz', step: current, total_steps: questions.length });window.scrollTo({top:0,behavior:'smooth'});render();}
 function back(){if(current>0){current--;window.scrollTo({top:0,behavior:'smooth'});render();}}
 
 function renderResult(wrap){
+  gtag('event', 'quiz_completed', { event_category: 'quiz', result_stage: ans['stage'] || '' });
   document.getElementById('prog-label').textContent='Your plan is ready 🌊';
   document.getElementById('prog-pct').textContent='100%';
   document.getElementById('prog-fill').style.width='100%';
@@ -441,6 +444,7 @@ function sub(){
   document.getElementById('ef').style.display='none';
   document.getElementById('sz').style.display='block';
   if(typeof fbq!=='undefined'){fbq('track','Lead');fbq('track','CompleteRegistration');}
+  gtag('event', 'quiz_email_submitted', { event_category: 'quiz', stage: ans['stage'] || '', income: ans['income'] || '', lifestyle: ans['lifestyle'] || '' });
   setTimeout(()=>window.location.href='/thank-you',1200);
 }
 render();
